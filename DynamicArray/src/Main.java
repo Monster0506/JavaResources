@@ -9,8 +9,9 @@ public class Main {
 		dynamicArray.add(5);
 		dynamicArray.add(8);
 		dynamicArray.add(7);
-		System.out.println(dynamicArray.max());
-		System.out.println(dynamicArray.min());
+//		System.out.println(dynamicArray.max());
+//		System.out.println(dynamicArray.min());
 		System.out.println(dynamicArray);
-	    }
+	}
+
 }
