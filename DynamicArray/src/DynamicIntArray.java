@@ -1,13 +1,18 @@
+
 /***
- * A general purpose dynamically sized array.
+ * A dynamically sized array of integers.
+ * 
  * 
  * @author Monster0506
  */
-public class DynamicArray {
+public class DynamicIntArray {
 
+	/**
+	 * The visible size of the array.
+	 */
 	int size;
 	int capacity = 10;
-	Object[] array;
+	int[] array;
 
 	/**
 	 *
@@ -17,8 +22,8 @@ public class DynamicArray {
 	 * 
 	 * @custom.see {@link #DynamicIntArray(int)}
 	 */
-	public DynamicArray() {
-		this.array = new Object[capacity];
+	public DynamicIntArray() {
+		this.array = new int[capacity];
 	}
 
 	/**
@@ -28,9 +33,9 @@ public class DynamicArray {
 	 * 
 	 * @custom.see {@link #DynamicIntArray()}
 	 */
-	public DynamicArray(int capacity) {
+	public DynamicIntArray(int capacity) {
 		this.capacity = capacity;
-		this.array = new Object[capacity];
+		this.array = new int[capacity];
 	}
 
 	/**
@@ -38,12 +43,12 @@ public class DynamicArray {
 	 * 
 	 * @param index int - the location to get the item of the array from.
 	 * 
-	 * @return Object - the Object at the index position. Returns null if that
-	 *         position does not exist.
+	 * @return int - the int at the index position. Returns null if that position
+	 *         does not exist.
 	 * 
 	 * @custom.see {@link #get()}
 	 */
-	public Object get(int index) {
+	public int get(int index) {
 		return array[index];
 	}
 
@@ -61,14 +66,14 @@ public class DynamicArray {
 	/**
 	 * Appends an item to the end of the array.
 	 * 
-	 * @param data Object - the item to add to the end of the array.
+	 * @param data int - the item to add to the end of the array.
 	 * 
 	 * @custom.calls {@link #grow()}
 	 * 
 	 * @custom.see {@link #insert()}
 	 * 
 	 */
-	public void add(Object data) {
+	public void add(int data) {
 		if (size >= capacity) {
 			grow();
 		}
@@ -88,7 +93,7 @@ public class DynamicArray {
 	 * @custom.see {@link #delete()}
 	 */
 	public void remove(int index) {
-		for (int i = index; i < size; i++) {
+		for (int i = index; i < size - 1; i++) {
 			array[i] = array[i + 1];
 
 		}
@@ -101,18 +106,18 @@ public class DynamicArray {
 	}
 
 	/**
-	 * Adds an Object to a user defined position in the array.
+	 * Adds an int to a user defined position in the array.
 	 * 
-	 * @param index int - the place to insert the Object in
+	 * @param index int - the place to insert the int in
 	 * 
-	 * @param data  Object - the item to insert into the array.
+	 * @param data  int - the item to insert into the array.
 	 * 
 	 * @custom.calls {@link #grow()}
 	 * 
 	 * @custom.see :#add()
 	 * 
 	 */
-	public void insert(int index, Object data) {
+	public void insert(int index, int data) {
 		if (size >= capacity) {
 			grow();
 		}
@@ -126,43 +131,33 @@ public class DynamicArray {
 	}
 
 	/**
-	 * Removes a user specified Object from the array.
+	 * Removes a user specified int from the array.
 	 * 
-	 * @param data Object - The Object to be removed
+	 * @param data int - The int to be removed
 	 * 
 	 * @custom.calls {@link #shrink()}
 	 * 
 	 * @custom.see {@link #remove()}
 	 */
-	public void delete(Object data) {
+	public void delete(int data) {
 		for (int i = 0; i < size; i++) {
 			if (array[i] == data) {
-				for (int j = 0; j < (size - i - 1); j++) {
-					array[i + j] = array[i + j + 1];
-				}
-
-				array[size - 1] = null;
-				size--;
-
-				if (size <= (capacity / 3)) {
-					shrink();
-				}
-				break;
+				remove(i);
 			}
 		}
 	}
 
 	/**
-	 * Returns the position of the Object in the array.
+	 * Returns the position of the int in the array.
 	 * 
-	 * @param data Object - the int to search for.
+	 * @param data int - the int to search for.
 	 * 
-	 * @return Object - the position of the Object in the array. If the Object does
-	 *         not exist, returns -1
+	 * @return int - the int position in the array. If the int does not exist,
+	 *         returns -1
 	 * 
 	 * @custom.see {@link #get()}
 	 */
-	public int search(Object data) {
+	public int search(int data) {
 		for (int i = 0; i < size; i++) {
 			if (array[i] == data) {
 				return i;
@@ -177,8 +172,8 @@ public class DynamicArray {
 	 * @custom.see {@link #shrink()}
 	 */
 	private void grow() {
-		int newCapacity = (capacity * 2);
-		Object[] newArray = new Object[newCapacity];
+		int newCapacity = (capacity + 1);
+		int[] newArray = new int[newCapacity];
 
 		for (int i = 0; i < size; i++) {
 			newArray[i] = array[i];
@@ -195,8 +190,8 @@ public class DynamicArray {
 	 * @custom.see {@link #grow()}
 	 */
 	private void shrink() {
-		int newCapacity = (capacity / 2);
-		Object[] newArray = new Object[newCapacity];
+		int newCapacity = (capacity - 1);
+		int[] newArray = new int[newCapacity];
 
 		for (int i = 0; i < size; i++) {
 			newArray[i] = array[i];
@@ -211,6 +206,7 @@ public class DynamicArray {
 	 * 
 	 * @return boolean - true if the array is empty, else false.
 	 */
+
 	public boolean isEmpty() {
 		return size == 0;
 	}
@@ -235,4 +231,41 @@ public class DynamicArray {
 		return string;
 
 	}
+
+	/**
+	 * Return the maximum value in the array.
+	 * 
+	 * @return int - the maximum value in the array.
+	 * 
+	 * @custom.see {@link #min()}
+	 */
+	public int max() {
+		int hi = array[0];
+		for (int i = 0; i < size; i++) {
+			if (array[i] > hi) {
+				hi = array[i];
+			}
+		}
+		return hi;
+	}
+
+	/**
+	 * Returns the minimum value in the array
+	 * 
+	 * @return int - the minimum value in the array
+	 * 
+	 * @custom.see {@link #max()}
+	 */
+	public int min() {
+		int low = array[0];
+		for (int i = 0; i < size; i++) {
+			if (array[i] < low) {
+				low = array[i];
+			}
+		}
+
+		return low;
+
+	}
+
 }
